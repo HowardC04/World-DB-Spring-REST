@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CountrylanguageService {
+public class CountryLanguageService {
 
     private final CountrylanguageEntityRepository countrylanguageEntityRepository;
 
     @Autowired
-    public CountrylanguageService(CountrylanguageEntityRepository countrylanguageEntityRepository) {
+    public CountryLanguageService(CountrylanguageEntityRepository countrylanguageEntityRepository) {
         this.countrylanguageEntityRepository = countrylanguageEntityRepository;
     }
 
