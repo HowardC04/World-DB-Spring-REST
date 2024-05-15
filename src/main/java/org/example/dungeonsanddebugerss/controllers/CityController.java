@@ -1,28 +1,41 @@
 package org.example.dungeonsanddebugerss.controllers;
 
 import org.example.dungeonsanddebugerss.model.entities.CityEntity;
+import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
+import org.example.dungeonsanddebugerss.model.exception.CityAlreadyExistsException;
+import org.example.dungeonsanddebugerss.model.exception.CityDoesNotExistException;
+import org.example.dungeonsanddebugerss.model.exception.CountryDoesNotExistException;
 import org.example.dungeonsanddebugerss.service.CityService;
+import org.example.dungeonsanddebugerss.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class CityController {
     private final CityService cityService;
+    private final CountryService countryService;
 
     @Autowired
-    public CityController(CityService cityService) {
+    public CityController(CityService cityService, CountryService countryService) {
         this.cityService = cityService;
+        this.countryService = countryService;
     }
 
     @PostMapping("/city")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCity(@RequestBody CityEntity city) {
+    public void addCity(@RequestBody CityEntity city) throws CountryDoesNotExistException, CityAlreadyExistsException {
         // TODO
+        cityService.checkCityCountryExists(city);
+        CountryEntity country = countryService.getCountryByCode(city.getCountryCode().getCode())
+                .orElseThrow(() -> new CountryDoesNotExistException(city.getCountryCode().getCode()));
+        city.setCountryCode(country);
+        cityService.createCity(city);
     }
 
     @GetMapping("/cities")
@@ -31,26 +44,41 @@ public class CityController {
     }
 
     @GetMapping("/city/{id}")
-    public CityEntity getCityById(@PathVariable int id) {
-        // TODO
+    public CityEntity getCityById(@PathVariable int id) throws CityDoesNotExistException {
+        Optional<CityEntity> cityOptional = cityService.getCityById(id);
+        if(cityOptional.isEmpty()){
+            throw new CityDoesNotExistException(Integer.toString(id));
+        }
         return cityService.getCityById(id).get();
     }
 
     @GetMapping("/city/name")
-    public List<CityEntity> getCityProperty(@RequestParam(name="name") String name) {
-        // TODO
-        return null;
+    public List<CityEntity> getCityProperty(@RequestParam(name="name") String name) throws CityDoesNotExistException {
+        List<CityEntity> city = cityService.findCitiesByName(name);
+        if(city.isEmpty()){
+            throw new CityDoesNotExistException(name);
+        } else{
+            return city;
+        }
     }
 
     @PutMapping("/city/{id}")
-    public CityEntity updateCity(@RequestBody CityEntity city, @PathVariable Integer id) {
+    public CityEntity updateCity(@RequestBody CityEntity city, @PathVariable Integer id) throws CityDoesNotExistException, CityAlreadyExistsException {
         // TODO
-        return null;
+        cityService.checkCityCountryExists(city);
+        CityEntity updatedCity = cityService.updateCity(id, city);
+        if (updatedCity == null) {
+            throw new CityDoesNotExistException(city.getName());
+        }
+        return updatedCity;
     }
 
     @DeleteMapping("/city/{id}")
-    public CityEntity deleteCity(@PathVariable int id) {
+    public CityEntity deleteCity(@PathVariable int id) throws CityDoesNotExistException {
         // TODO
-        return null;
+        CityEntity city = cityService.getCityById(id)
+                .orElseThrow(() -> new CityDoesNotExistException(String.valueOf(id)));
+        cityService.deleteCity(id);
+        return city;
     }
 }
