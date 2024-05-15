@@ -18,7 +18,7 @@ public class CountrylanguageEntityId implements Serializable {
     @ColumnDefault("''")
     @Column(name = "CountryCode", nullable = false, length = 3)
     private String countryCode;
-
+   // this is a change
     @Size(max = 30)
     @NotNull
     @ColumnDefault("''")
