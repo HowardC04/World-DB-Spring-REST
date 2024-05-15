@@ -1,8 +1,8 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.example.dungeonsanddebugerss.entities.CountrylanguageEntity;
-import org.example.dungeonsanddebugerss.entities.CountrylanguageEntityId;
-import org.example.dungeonsanddebugerss.respositories.CountrylanguageEntityRepository;
+import org.example.dungeonsanddebugerss.entities.CountryLanguageEntity;
+import org.example.dungeonsanddebugerss.entities.CountryLanguageEntityId;
+import org.example.dungeonsanddebugerss.respositories.CountryLanguageEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,29 +11,29 @@ import java.util.Optional;
 @Service
 public class CountryLanguageService {
 
-    private final CountrylanguageEntityRepository countrylanguageEntityRepository;
+    private final CountryLanguageEntityRepository countrylanguageEntityRepository;
 
     @Autowired
-    public CountryLanguageService(CountrylanguageEntityRepository countrylanguageEntityRepository) {
+    public CountryLanguageService(CountryLanguageEntityRepository countrylanguageEntityRepository) {
         this.countrylanguageEntityRepository = countrylanguageEntityRepository;
     }
 
-    public CountrylanguageEntity createCountryLanguage(CountrylanguageEntity countryLanguage) {
+    public CountryLanguageEntity createCountryLanguage(CountryLanguageEntity countryLanguage) {
         return countrylanguageEntityRepository.save(countryLanguage);
     }
 
-    public List<CountrylanguageEntity> getAllCountryLanguages() {
+    public List<CountryLanguageEntity> getAllCountryLanguages() {
         return countrylanguageEntityRepository.findAll();
     }
 
-    public Optional<CountrylanguageEntity> getCountryLanguageById(CountrylanguageEntityId id) {
+    public Optional<CountryLanguageEntity> getCountryLanguageById(CountryLanguageEntityId id) {
         return countrylanguageEntityRepository.findById(id);
     }
 
-    public CountrylanguageEntity updateCountryLanguage(CountrylanguageEntityId id, CountrylanguageEntity updatedCountryLanguage) {
-        Optional<CountrylanguageEntity> countryLanguageOptional = countrylanguageEntityRepository.findById(id);
+    public CountryLanguageEntity updateCountryLanguage(CountryLanguageEntityId id, CountryLanguageEntity updatedCountryLanguage) {
+        Optional<CountryLanguageEntity> countryLanguageOptional = countrylanguageEntityRepository.findById(id);
         if (countryLanguageOptional.isPresent()) {
-            CountrylanguageEntity existingCountryLanguage = countryLanguageOptional.get();
+            CountryLanguageEntity existingCountryLanguage = countryLanguageOptional.get();
             existingCountryLanguage.setCountryCode(updatedCountryLanguage.getCountryCode());
             existingCountryLanguage.setIsOfficial(updatedCountryLanguage.getIsOfficial());
             existingCountryLanguage.setPercentage(updatedCountryLanguage.getPercentage());
@@ -44,8 +44,8 @@ public class CountryLanguageService {
         }
     }
 
-    public boolean deleteCountryLanguage(CountrylanguageEntityId id) {
-        Optional<CountrylanguageEntity> countryLanguageOptional = countrylanguageEntityRepository.findById(id);
+    public boolean deleteCountryLanguage(CountryLanguageEntityId id) {
+        Optional<CountryLanguageEntity> countryLanguageOptional = countrylanguageEntityRepository.findById(id);
         if (countryLanguageOptional.isPresent()) {
             countrylanguageEntityRepository.delete(countryLanguageOptional.get());
             return true;
