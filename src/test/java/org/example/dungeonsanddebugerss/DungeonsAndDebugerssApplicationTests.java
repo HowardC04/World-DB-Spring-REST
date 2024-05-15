@@ -1,26 +1,19 @@
 package org.example.dungeonsanddebugerss;
 
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
-import org.example.dungeonsanddebugerss.entities.CityEntity;
-import org.example.dungeonsanddebugerss.respositories.CityEntityRepository;
+import org.example.dungeonsanddebugerss.model.entities.CityEntity;
 import org.example.dungeonsanddebugerss.service.WorldService;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class DungeonsAndDebugerssApplicationTests {

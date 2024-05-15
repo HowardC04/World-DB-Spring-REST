@@ -1,6 +1,6 @@
-package org.example.dungeonsanddebugerss.respositories;
+package org.example.dungeonsanddebugerss.model.respositories;
 
-import org.example.dungeonsanddebugerss.entities.CityEntity;
+import org.example.dungeonsanddebugerss.model.entities.CityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CityEntityRepository extends JpaRepository<CityEntity, Integer> {

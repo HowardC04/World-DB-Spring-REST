@@ -1,12 +1,12 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.example.dungeonsanddebugerss.entities.CityEntity;
-import org.example.dungeonsanddebugerss.entities.CountryEntity;
+import org.example.dungeonsanddebugerss.model.entities.CityEntity;
+import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
 
-import org.example.dungeonsanddebugerss.entities.CountryLanguageEntity;
-import org.example.dungeonsanddebugerss.respositories.CityEntityRepository;
-import org.example.dungeonsanddebugerss.respositories.CountryEntityRepository;
-import org.example.dungeonsanddebugerss.respositories.CountryLanguageEntityRepository;
+import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
+import org.example.dungeonsanddebugerss.model.respositories.CityEntityRepository;
+import org.example.dungeonsanddebugerss.model.respositories.CountryEntityRepository;
+import org.example.dungeonsanddebugerss.model.respositories.CountryLanguageEntityRepository;
 
 
 import org.springframework.stereotype.Service;

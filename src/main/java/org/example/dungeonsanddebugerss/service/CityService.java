@@ -1,8 +1,7 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.example.dungeonsanddebugerss.entities.CityEntity;
-import org.example.dungeonsanddebugerss.respositories.CityEntityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.dungeonsanddebugerss.model.entities.CityEntity;
+import org.example.dungeonsanddebugerss.model.respositories.CityEntityRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;

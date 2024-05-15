@@ -1,6 +1,6 @@
-package org.example.dungeonsanddebugerss.respositories;
+package org.example.dungeonsanddebugerss.model.respositories;
 
-import org.example.dungeonsanddebugerss.entities.CountryEntity;
+import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CountryEntityRepository extends JpaRepository<CountryEntity, String> {

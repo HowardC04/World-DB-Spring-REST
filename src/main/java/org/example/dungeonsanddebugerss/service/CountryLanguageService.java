@@ -1,8 +1,8 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.example.dungeonsanddebugerss.entities.CountryLanguageEntity;
-import org.example.dungeonsanddebugerss.entities.CountryLanguageEntityId;
-import org.example.dungeonsanddebugerss.respositories.CountryLanguageEntityRepository;
+import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
+import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntityId;
+import org.example.dungeonsanddebugerss.model.respositories.CountryLanguageEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

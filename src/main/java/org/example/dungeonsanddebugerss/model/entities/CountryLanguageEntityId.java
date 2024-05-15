@@ -1,4 +1,4 @@
-package org.example.dungeonsanddebugerss.entities;
+package org.example.dungeonsanddebugerss.model.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
