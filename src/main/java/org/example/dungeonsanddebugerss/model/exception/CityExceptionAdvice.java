@@ -19,11 +19,20 @@ public class CityExceptionAdvice {
     }
 
     @ExceptionHandler(CountryDoesNotExistException.class)
-    public ResponseEntity<Response> cityAlreadyExistsHandler(CountryDoesNotExistException e, HttpServletRequest request) {
+    public ResponseEntity<Response> countryDoesNotExistHandler(CountryDoesNotExistException e, HttpServletRequest request) {
         Response response = new Response(e.getMessage(),
                                          HttpStatus.BAD_REQUEST.value(),
                                          request.getRequestURL().toString());
         return ResponseEntity.badRequest()
+                             .body(response);
+    }
+
+    @ExceptionHandler(CityDoesNotExistException.class)
+    public ResponseEntity<Response> cityDoesNotExistException(CityDoesNotExistException e, HttpServletRequest request) {
+        Response response = new Response(e.getMessage(),
+                                         HttpStatus.NOT_FOUND.value(),
+                                         request.getRequestURL().toString());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .body(response);
     }
 }
