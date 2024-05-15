@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -20,8 +21,9 @@ public class CountryController {
 
     @PostMapping("/country")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCountry(){
-        // TODO
+    public String addCountry(@RequestBody CountryEntity countryEntity){
+        countryService.createCountry(countryEntity);
+        return "Country: " + countryEntity.getName() + " has been added to the database";
     }
 
     @GetMapping("/countries")
@@ -31,19 +33,32 @@ public class CountryController {
 
     @GetMapping("/country/{countryCode}")
     public CountryEntity getCountryById(@PathVariable String countryCode){
-        // TODO
-        return countryService.getCountryByCode(countryCode).get();
+        return countryService.getCountryByCode(countryCode).orElseThrow();
     }
 
-    @PutMapping("/country/{id}")
-    public CountryEntity updateCountry(@RequestBody CountryEntity country, @PathVariable Integer id){
-        // TODO
-        return null;
+    @PutMapping("/country/{countryCode}")
+    public Optional<CountryEntity> updateCountry(@RequestBody CountryEntity country, @PathVariable String countryCode){
+        Optional<CountryEntity> findCountry = countryService.getCountryByCode(countryCode);
+
+        if (findCountry.isPresent() && country != null) {
+            countryService.updateCountry(countryCode, country);
+        }
+
+        return countryService.getCountryByCode(countryCode);
     }
 
-    @DeleteMapping("/country/{id}")
-    public CountryEntity deleteCountry(@PathVariable int id){
-        // TODO
-        return null;
+    @DeleteMapping("/country/{countryCode}")
+    public String deleteCountry(@PathVariable String countryCode){
+        Optional<CountryEntity> countryToRemove = countryService.getCountryByCode(countryCode);
+        System.out.println();
+        if (countryToRemove.isPresent()) {
+            // throw new NoSuchElementException("Country not found");
+        }
+        countryService.deleteCountry(countryCode);
+
+        return  "Country with country code: " + countryCode + " deleted successfully";
     }
-}
+
+
+    }
+
