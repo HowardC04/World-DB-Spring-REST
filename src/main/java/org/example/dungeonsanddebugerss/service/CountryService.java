@@ -26,6 +26,7 @@ public class CountryService {
     }
 
     public Optional<CountryEntity> getCountryByCode(String code) {
+        if (code == null) return Optional.empty();
         return countryRepository.findById(code);
     }
 

@@ -25,6 +25,9 @@ public class CityService {
     }
 
     public Optional<CityEntity> getCityById(Integer id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         return cityEntityRepository.findById(id);
     }
 
@@ -57,7 +60,7 @@ public class CityService {
         return cityEntityRepository.findByName(name);
     }
 
-    public void checkCityCountryExists(CityEntity city) throws CityAlreadyExistsException {
+    public void checkCityDoesNotExist(CityEntity city) throws CityAlreadyExistsException {
         if (getCityById(city.getId()).isPresent()) {
             throw new CityAlreadyExistsException(city.getId());
         }
