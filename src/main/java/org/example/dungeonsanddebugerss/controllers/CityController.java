@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +30,19 @@ public class CityController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addCity(@RequestBody CityEntity city) throws CountryDoesNotExistException, CityAlreadyExistsException {
         // TODO
-        cityService.checkCityCountryExists(city);
-        CountryEntity country = countryService.getCountryByCode(city.getCountryCode().getCode())
-                .orElseThrow(() -> new CountryDoesNotExistException(city.getCountryCode().getCode()));
-        city.setCountryCode(country);
+        cityService.checkCityDoesNotExist(city);
+        fetchFullCountryDetails(city);
         cityService.createCity(city);
+    }
+
+    private void fetchFullCountryDetails(CityEntity city) throws CountryDoesNotExistException {
+        CountryEntity country = getCountryFromCity(city);
+        city.setCountryCode(country);
+    }
+
+    private CountryEntity getCountryFromCity(CityEntity city) throws CountryDoesNotExistException {
+        return countryService.getCountryByCode(city.getCountryCode().getCode())
+                             .orElseThrow(() -> new CountryDoesNotExistException(city.getCountryCode().getCode()));
     }
 
     @GetMapping("/cities")
@@ -63,9 +70,9 @@ public class CityController {
     }
 
     @PutMapping("/city/{id}")
-    public CityEntity updateCity(@RequestBody CityEntity city, @PathVariable Integer id) throws CityDoesNotExistException, CityAlreadyExistsException {
+    public CityEntity updateCity(@RequestBody CityEntity city, @PathVariable Integer id) throws CityDoesNotExistException, CountryDoesNotExistException {
         // TODO
-        cityService.checkCityCountryExists(city);
+        fetchFullCountryDetails(city);
         CityEntity updatedCity = cityService.updateCity(id, city);
         if (updatedCity == null) {
             throw new CityDoesNotExistException(city.getName());
