@@ -62,8 +62,7 @@ public class CountryLanguageController {
 
     @DeleteMapping("/language")
     public String deleteCountryLanguage(@RequestParam("countryCode") String countryCode,
-                                                       @RequestParam("lang") String language,
-                                                       @RequestBody CountryLanguageEntity countryLanguage) throws CountryLanguageNotFoundException {
+                                                       @RequestParam("lang") String language) throws CountryLanguageNotFoundException {
         Optional<CountryLanguageEntity> languageEntityToDelete = getCountryLanguageEntity(countryCode, language);
         if(languageEntityToDelete.isEmpty()){
             throw new CountryLanguageNotFoundException("Can not delete country Language because Country can not be found" +
