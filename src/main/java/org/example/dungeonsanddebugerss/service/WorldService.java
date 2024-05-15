@@ -10,31 +10,29 @@ import org.example.dungeonsanddebugerss.respositories.CountryEntityRepository;
 import org.example.dungeonsanddebugerss.respositories.CountrylanguageEntityRepository;
 
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Map;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 
 @Service
 public class WorldService {
 
     private final Logger logger = Logger.getLogger("Spring Logger");
+    private final CountryService countryService;
 
     private CityEntityRepository cityEntityRepository;
     private CountryEntityRepository countryEntityRepository;
     private CountrylanguageEntityRepository countrylanguageEntityRepository;
 
-    public WorldService(CityEntityRepository cityEntityRepository, CountryEntityRepository countryEntityRepository, CountrylanguageEntityRepository countrylanguageEntityRepository) {
+    public WorldService(CityEntityRepository cityEntityRepository, CountryEntityRepository countryEntityRepository, CountrylanguageEntityRepository countrylanguageEntityRepository, CountryService countryService) {
         this.cityEntityRepository = cityEntityRepository;
         this.countryEntityRepository = countryEntityRepository;
         this.countrylanguageEntityRepository = countrylanguageEntityRepository;
+        this.countryService = countryService;
     }
 
     public float findPercentageOfPopulationInLargestCity(String countryName) {
@@ -99,48 +97,27 @@ public class WorldService {
         return top5Cities;
     }
 
-    public List<CountryEntity> findCountryWithMostCity() {
-        Map<CountryEntity, Integer> countryCityMap = new HashMap<>();
-        List<CountryEntity> countryList = countryEntityRepository.findAll();
-          logger.info("Starting to go through countryList...");
-        for (CountryEntity country: countryList) {
-//          logger.info("Country: " + country.getName());
-            String countryCode = country.getCode();
-//            logger.info("Country Code: " + countryCode);
-            int cityCount = countByCountryCode(countryCode);
-//            logger.info("Country code {} has {} cities", countryCode, cityCount);
-            countryCityMap.put(country, cityCount);
+    public List<CountryEntity> findCountryWithMostCity(){
+        Map<String, Integer> countryCityMap = new HashMap<>();
+        for(CityEntity city : cityEntityRepository.findAll()){
+            String countryCode = city.getCountryCode().getCode();
+            countryCityMap.put(countryCode,countryCityMap.getOrDefault(countryCode, 0) + 1 );
         }
 
         int maxCityCount = 0;
-        for (int cityCount : countryCityMap.values()) {
-            if (cityCount > maxCityCount) {
-                maxCityCount = cityCount;
+        String countryCode = "";
+        for(Map.Entry<String, Integer> entry : countryCityMap.entrySet()){
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            if(value > maxCityCount){
+                maxCityCount = value;
+                countryCode = key;
             }
         }
-
-        List<CountryEntity> countryWithMostCities = new ArrayList<>();
-        for (Map.Entry<CountryEntity, Integer> countryEntry : countryCityMap.entrySet()) {
-            if (countryEntry.getValue() >= maxCityCount) {
-                countryWithMostCities.add(countryEntry.getKey());
-        logger.info("The country with most cities is " + countryWithMostCities);
-            }
-        }
-        return countryWithMostCities;
-
-    }
-
-    private int countByCountryCode(String countryCode){
-         int countryCodeCount = 0;
-        List<CityEntity> cityList = cityEntityRepository.findAll();
-         for(CityEntity city : cityList ){
-//             logger.info("City : {}", city.getName());
-             if(city.getCountryCode().getCode().equals(countryCode)){
-//                 logger.info("Country Code : {}", city.getCountryCode().getCode());
-                 countryCodeCount++;
-             }
-         }
-         return countryCodeCount;
+        Optional<CountryEntity> country = countryService.getCountryByCode(countryCode);
+        List<CountryEntity> countries = new ArrayList<>();
+        country.ifPresent(countries::add);
+        return countries;
     }
 
     public int returnNumOfCities(){
@@ -168,7 +145,6 @@ public class WorldService {
         List<CountryEntity> allCountries = countryEntityRepository.findAll();
         logger.fine("Collected all countries");
         List<CountryEntity> noHeadOfStateCountries = new ArrayList<>();
-
         logger.fine("Looping through countries to find no head of state");
         for (CountryEntity countryEntity : allCountries) {
             if (countryEntity.getHeadOfState() == null) {
@@ -184,15 +160,17 @@ public class WorldService {
     public int findCountOfMostPopularLanguage(String countryName){
             int totalPopulation;
             String countryCode;
-
+        logger.info("Finding the country");
         CountryEntity country = findCountry(countryName);
         if(country != null){
+            logger.fine("Country found");
             countryCode = country.getCode();
             totalPopulation = country.getPopulation();
         }else{
+            logger.warning("Country not found");
             return -1;
         }
-
+        logger.info("Getting number of people who speaks each official language");
         ArrayList<Integer> peopleWhoSpeakLanguage = new ArrayList<Integer>();
         for(CountrylanguageEntity language : getAllLanguageCountrySpeaks(countryCode)){
             if(language.getIsOfficial().equals("T")){
@@ -201,6 +179,7 @@ public class WorldService {
         }
 
         if(peopleWhoSpeakLanguage.isEmpty()){
+            logger.info("No official language exists for this country");
             return -1;
         }
 
