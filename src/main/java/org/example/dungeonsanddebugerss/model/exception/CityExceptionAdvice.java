@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -28,11 +30,10 @@ public class CityExceptionAdvice {
     }
 
     @ExceptionHandler(CityDoesNotExistException.class)
-    public ResponseEntity<Response> cityDoesNotExistException(CityDoesNotExistException e, HttpServletRequest request) {
-        Response response = new Response(e.getMessage(),
-                                         HttpStatus.NOT_FOUND.value(),
-                                         request.getRequestURL().toString());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(response);
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Response> cityDoesNotExistHandler(CityDoesNotExistException e, HttpServletRequest request){
+
+        Response response = new Response(e.getMessage(), 400, request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
     }
 }
