@@ -16,4 +16,11 @@ public class CountryLanguageAdvice {
         Response response = new Response(e.getMessage(), 400, request.getRequestURL().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
+
+    @ExceptionHandler(LanguageAlreadyExistsForCountryException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Response> languageAlreadyExistsForCountryHandler(LanguageAlreadyExistsForCountryException e, HttpServletRequest request){
+        Response response = new Response(e.getMessage(), 400, request.getRequestURL().toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }
