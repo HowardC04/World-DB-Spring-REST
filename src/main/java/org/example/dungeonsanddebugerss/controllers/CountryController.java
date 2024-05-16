@@ -5,6 +5,7 @@ import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
 import org.example.dungeonsanddebugerss.model.exception.CountryCodeDoesNotExistException;
 import org.example.dungeonsanddebugerss.model.exception.CountryIsNullException;
 import org.example.dungeonsanddebugerss.model.exception.CountryNotFoundException;
+import org.example.dungeonsanddebugerss.model.exception.KeyNotFoundException;
 import org.example.dungeonsanddebugerss.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,10 @@ public class CountryController {
 
     @PostMapping("/country")
     @ResponseStatus(HttpStatus.CREATED)
-    public String addCountry(@Valid @RequestBody Optional<CountryEntity> countryEntity) throws CountryIsNullException {
+    public String addCountry(@Valid @RequestBody Optional<CountryEntity> countryEntity, @RequestParam(name="key", required = false) String key) throws CountryIsNullException, KeyNotFoundException {
+
+        checkForKey(key);
+
         if (countryEntity.isEmpty()) {
             throw new CountryIsNullException();
         }else {
@@ -51,7 +55,11 @@ public class CountryController {
     }
 
     @PutMapping("/country/{countryCode}")
-    public Optional<CountryEntity> updateCountry(@Valid @RequestBody Optional<CountryEntity> country, @PathVariable String countryCode) throws CountryCodeDoesNotExistException, CountryIsNullException {
+    public Optional<CountryEntity> updateCountry(@Valid @RequestBody Optional<CountryEntity> country, @PathVariable String countryCode, @RequestParam(name="key", required = false) String key)
+            throws CountryCodeDoesNotExistException, CountryIsNullException, KeyNotFoundException {
+
+        checkForKey(key);
+
         Optional<CountryEntity> findCountry = countryService.getCountryByCode(countryCode);
 
         if (findCountry.isPresent() && country.isPresent()) {
@@ -68,7 +76,9 @@ public class CountryController {
     }
 
     @DeleteMapping("/country/{countryCode}")
-    public String deleteCountry(@PathVariable String countryCode) throws CountryCodeDoesNotExistException {
+    public String deleteCountry(@PathVariable String countryCode, @RequestParam(name="key", required = false) String key) throws CountryCodeDoesNotExistException, KeyNotFoundException {
+        checkForKey(key);
+
         Optional<CountryEntity> countryToRemove = countryService.getCountryByCode(countryCode);
 
         if (countryToRemove.isPresent()) {
@@ -79,6 +89,12 @@ public class CountryController {
         throw new CountryCodeDoesNotExistException(countryCode);
     }
 
-
+    private void checkForKey(String key) throws KeyNotFoundException {
+        if (key == null || key.isEmpty()) {
+            throw new KeyNotFoundException();
+        }
     }
+
+
+}
 

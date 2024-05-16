@@ -4,6 +4,7 @@ import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
 import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntityId;
 import org.example.dungeonsanddebugerss.model.exception.CountryLanguageNotFoundException;
 import org.example.dungeonsanddebugerss.model.exception.CountryNotFoundException;
+import org.example.dungeonsanddebugerss.model.exception.KeyNotFoundException;
 import org.example.dungeonsanddebugerss.model.exception.LanguageAlreadyExistsForCountryException;
 import org.example.dungeonsanddebugerss.service.CountryLanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ public class CountryLanguageController {
 
     @PostMapping("/language")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCountryLanguage(@RequestBody CountryLanguageEntity countryLanguage) throws LanguageAlreadyExistsForCountryException {
+    public void addCountryLanguage(@RequestBody CountryLanguageEntity countryLanguage, @RequestParam(name="key", required = false) String key) throws LanguageAlreadyExistsForCountryException, KeyNotFoundException {
+        checkForKey(key);
         Optional<CountryLanguageEntity> language = countryLanguageService.getCountryLanguageById(countryLanguage.getId());
         if(language.isEmpty()){
             countryLanguageService.createCountryLanguage(countryLanguage);
@@ -55,7 +57,10 @@ public class CountryLanguageController {
     @PutMapping("/language/countryCode/lang")
     public CountryLanguageEntity updateCountryLanguage(@RequestParam("countryCode") String countryCode,
                                                        @RequestParam("lang") String language,
-                                                       @RequestBody CountryLanguageEntity countryLanguage) throws CountryLanguageNotFoundException {
+                                                       @RequestBody CountryLanguageEntity countryLanguage,
+                                                       @RequestParam(name="key", required = false) String key) throws CountryLanguageNotFoundException, KeyNotFoundException {
+
+        checkForKey(key);
         Optional<CountryLanguageEntity> languageEntity = getCountryLanguageEntity(countryCode,language);
         if(languageEntity.isEmpty()){
             throw new CountryLanguageNotFoundException("Can not update because country code and language can't be found" +
@@ -69,7 +74,9 @@ public class CountryLanguageController {
 
     @DeleteMapping("/language")
     public String deleteCountryLanguage(@RequestParam("countryCode") String countryCode,
-                                                       @RequestParam("lang") String language) throws CountryLanguageNotFoundException {
+                                        @RequestParam("lang") String language,
+                                        @RequestParam(name="key", required = false) String key) throws CountryLanguageNotFoundException, KeyNotFoundException {
+        checkForKey(key);
         Optional<CountryLanguageEntity> languageEntityToDelete = getCountryLanguageEntity(countryCode, language);
         if(languageEntityToDelete.isEmpty()){
             throw new CountryLanguageNotFoundException("Can not delete country Language because Country can not be found" +
@@ -88,5 +95,11 @@ public class CountryLanguageController {
             }
         }
         return Optional.empty();
+    }
+
+    private void checkForKey(String key) throws KeyNotFoundException {
+        if (key == null || key.isEmpty()) {
+            throw new KeyNotFoundException();
+        }
     }
 }

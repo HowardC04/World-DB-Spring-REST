@@ -5,6 +5,7 @@ import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
 import org.example.dungeonsanddebugerss.model.exception.CityAlreadyExistsException;
 import org.example.dungeonsanddebugerss.model.exception.CityDoesNotExistException;
 import org.example.dungeonsanddebugerss.model.exception.CountryDoesNotExistException;
+import org.example.dungeonsanddebugerss.model.exception.KeyNotFoundException;
 import org.example.dungeonsanddebugerss.service.CityService;
 import org.example.dungeonsanddebugerss.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class CityController {
 
     @PostMapping("/city")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCity(@RequestBody CityEntity city) throws CountryDoesNotExistException, CityAlreadyExistsException {
-        // TODO
+    public void addCity(@RequestBody CityEntity city, @RequestParam(name="key", required = false) String key) throws CountryDoesNotExistException, CityAlreadyExistsException, KeyNotFoundException {
+        checkForKey(key);
         cityService.checkCityDoesNotExist(city);
         fetchFullCountryDetails(city);
         cityService.createCity(city);
@@ -70,8 +71,8 @@ public class CityController {
     }
 
     @PutMapping("/city/{id}")
-    public CityEntity updateCity(@RequestBody CityEntity city, @PathVariable Integer id) throws CityDoesNotExistException, CountryDoesNotExistException {
-        // TODO
+    public CityEntity updateCity(@RequestBody CityEntity city, @PathVariable Integer id, @RequestParam(name="key", required = false) String key) throws CityDoesNotExistException, CountryDoesNotExistException, KeyNotFoundException {
+        checkForKey(key);
         fetchFullCountryDetails(city);
         CityEntity updatedCity = cityService.updateCity(id, city);
         if (updatedCity == null) {
@@ -81,11 +82,17 @@ public class CityController {
     }
 
     @DeleteMapping("/city/{id}")
-    public CityEntity deleteCity(@PathVariable int id) throws CityDoesNotExistException {
-        // TODO
+    public CityEntity deleteCity(@PathVariable int id, @RequestParam(name="key", required = false) String key) throws CityDoesNotExistException, KeyNotFoundException {
+        checkForKey(key);
         CityEntity city = cityService.getCityById(id)
                 .orElseThrow(() -> new CityDoesNotExistException(String.valueOf(id)));
         cityService.deleteCity(id);
         return city;
+    }
+
+    private void checkForKey(String key) throws KeyNotFoundException {
+        if (key == null || key.isEmpty()) {
+            throw new KeyNotFoundException();
+        }
     }
 }

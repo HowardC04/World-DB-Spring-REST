@@ -36,7 +36,7 @@ public class CityControllerTests {
     void givenAPostRequestWithAValidCityInItsBodyA201StatusCodeIsReturned() {
         CityEntity city = getCity("AND", 0);
         webTestClient.post()
-                .uri("http://localhost:8080/api/city")
+                .uri("http://localhost:8080/api/city" + "?key=hi")
                 .body(BodyInserters.fromValue(city))
                 .exchange()
                 .expectStatus()
@@ -60,7 +60,7 @@ public class CityControllerTests {
     void givenAPostRequestWithAnInvalidCountryCodeA400StatusCodeIsReturned() {
         CityEntity city = getCity("ZZZ", 0);
         webTestClient.post()
-                .uri("http://localhost:8080/api/city")
+                .uri("http://localhost:8080/api/city" + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectStatus()
@@ -79,7 +79,7 @@ public class CityControllerTests {
                 }
                 """;
         webTestClient.post()
-                     .uri("http://localhost:8080/api/city")
+                     .uri("http://localhost:8080/api/city" + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectBody()
@@ -91,7 +91,7 @@ public class CityControllerTests {
     void givenAPostRequestWithACityIdThatAlreadyExistsA400StatusCodeIsReturned() {
         CityEntity city = getCity("AND", 200);
         webTestClient.post()
-                     .uri("http://localhost:8080/api/city")
+                     .uri("http://localhost:8080/api/city" + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectStatus()
@@ -110,7 +110,7 @@ public class CityControllerTests {
                 }
                 """;
         webTestClient.post()
-                     .uri("http://localhost:8080/api/city")
+                     .uri("http://localhost:8080/api/city" + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectBody()
@@ -125,7 +125,7 @@ public class CityControllerTests {
         int cityId = 200;
         CityEntity city = getCity("AND", cityId);
         webTestClient.put()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectStatus()
@@ -138,7 +138,7 @@ public class CityControllerTests {
         int cityId = 200;
         CityEntity city = getCity("AND", cityId);
         webTestClient.put()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectBody(CityEntity.class)
@@ -151,7 +151,7 @@ public class CityControllerTests {
         int cityId = 200;
         CityEntity city = getCity("ZZZ", cityId);
         webTestClient.put()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectStatus()
@@ -171,7 +171,7 @@ public class CityControllerTests {
                 }
                 """.formatted(cityId);
         webTestClient.put()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectBody()
@@ -184,7 +184,7 @@ public class CityControllerTests {
         int cityId = 9999;
         CityEntity city = getCity("AND", cityId);
         webTestClient.put()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectStatus()
@@ -204,7 +204,7 @@ public class CityControllerTests {
                 }
                 """.formatted(cityId);
         webTestClient.put()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .body(BodyInserters.fromValue(city))
                      .exchange()
                      .expectBody()
@@ -245,7 +245,7 @@ public class CityControllerTests {
     void givenADeleteRequestForACityIdThatDoesNotExistReturnsA400ResponseCode() {
         int cityId = 9999;
         webTestClient.delete()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .exchange()
                      .expectStatus()
                      .isBadRequest();
@@ -265,7 +265,7 @@ public class CityControllerTests {
                 }
                 """.formatted(cityId, cityId);
         webTestClient.delete()
-                     .uri("http://localhost:8080/api/city/" + cityId)
+                     .uri("http://localhost:8080/api/city/" + cityId + "?key=hi")
                      .exchange()
                      .expectBody()
                 .json(expectedResponseBody);
