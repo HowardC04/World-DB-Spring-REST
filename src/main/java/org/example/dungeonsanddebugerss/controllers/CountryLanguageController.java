@@ -3,6 +3,7 @@ package org.example.dungeonsanddebugerss.controllers;
 import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
 import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntityId;
 import org.example.dungeonsanddebugerss.model.exception.CountryLanguageNotFoundException;
+import org.example.dungeonsanddebugerss.model.exception.LanguageAlreadyExistsForCountryException;
 import org.example.dungeonsanddebugerss.service.CountryLanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,12 @@ public class CountryLanguageController {
 
     @PostMapping("/language")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCountryLanguage(@RequestBody CountryLanguageEntity countryLanguage) throws CountryLanguageNotFoundException {
+    public void addCountryLanguage(@RequestBody CountryLanguageEntity countryLanguage) throws LanguageAlreadyExistsForCountryException {
         Optional<CountryLanguageEntity> language = countryLanguageService.getCountryLanguageById(countryLanguage.getId());
         if(language.isEmpty()){
             countryLanguageService.createCountryLanguage(countryLanguage);
         }else{
-            throw new CountryLanguageNotFoundException("Country language already exists");
+            throw new LanguageAlreadyExistsForCountryException("Country language already exists");
         }
     }
 
