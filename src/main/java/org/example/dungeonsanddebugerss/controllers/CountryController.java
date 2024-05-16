@@ -25,7 +25,7 @@ public class CountryController {
 
     @PostMapping("/country")
     @ResponseStatus(HttpStatus.CREATED)
-    public String addCountry(@RequestBody Optional<CountryEntity> countryEntity) throws CountryIsNullException {
+    public String addCountry(@Valid @RequestBody Optional<CountryEntity> countryEntity) throws CountryIsNullException {
         if (countryEntity.isEmpty()) {
             throw new CountryIsNullException();
         }else {
