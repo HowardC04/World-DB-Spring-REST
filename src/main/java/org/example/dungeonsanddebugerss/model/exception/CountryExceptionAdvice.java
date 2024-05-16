@@ -18,4 +18,19 @@ public class CountryExceptionAdvice {
         return ResponseEntity.badRequest().body(response);
     }
 
+    @ExceptionHandler(CountryCodeDoesNotExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Response> countryDoesNotExist(CountryCodeDoesNotExistException e, HttpServletRequest request) {
+        Response response = new Response(request.getRequestURL().toString(), 400, e.getMessage());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(CountryIsNullException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Response> countryIsNull(CountryIsNullException e, HttpServletRequest request) {
+        Response response = new Response(request.getRequestURL().toString(), 999, e.getMessage());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+
 }
