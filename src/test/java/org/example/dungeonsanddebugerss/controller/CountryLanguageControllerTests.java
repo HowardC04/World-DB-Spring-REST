@@ -1,34 +1,18 @@
 package org.example.dungeonsanddebugerss.controller;
 
-import org.example.dungeonsanddebugerss.controllers.CountryLanguageController;
-import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
-import org.example.dungeonsanddebugerss.model.respositories.CityEntityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 public class CountryLanguageControllerTests {
     private WebTestClient webTestClient;
 
-    @InjectMocks
-    private CountryLanguageController countryLanguageController;
-    private MockMvc mockMvc;
-
     @BeforeEach
     public void setUp() {
         webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
-        this.mockMvc = MockMvcBuilders.standaloneSetup(countryLanguageController).build();
     }
 
     @Test
@@ -60,5 +44,4 @@ public class CountryLanguageControllerTests {
                 .expectStatus()
                 .is4xxClientError();
     }
-
 }
