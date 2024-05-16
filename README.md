@@ -1,4 +1,4 @@
-## employee-sql-dao
+<h1>World-DB-Spring-REST</h1>
 World-DB-Spring 'Elite Seven' consisting of Howard, Patrick W, Patrick S, Selam, Alistar, Alex and Phoenix 👋.
 
 ## Project Overview
@@ -83,7 +83,7 @@ You will need to create your own pom.xml file which needs to contain the followi
 <h2>Connecting to your database</h2>
 
 
-To connect to your database please fill out the following in your application.properties file.
+To connect to your database please fill out the following in your application.properties file. In addition, ensure that you have the World databse on your local computer.
 ```
 spring.datasource.url=jdbc:mysql://localhost:3306/world
 spring.datasource.username=<YOUR USERNAME>
