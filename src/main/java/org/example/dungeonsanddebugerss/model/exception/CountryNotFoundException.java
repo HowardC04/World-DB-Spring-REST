@@ -1,4 +1,4 @@
-package org.example.dungeonsanddebugerss.exception;
+package org.example.dungeonsanddebugerss.model.exception;
 
 public class CountryNotFoundException extends Exception {
     public CountryNotFoundException(String country) {
