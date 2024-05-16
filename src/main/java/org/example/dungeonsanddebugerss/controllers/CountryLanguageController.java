@@ -3,6 +3,7 @@ package org.example.dungeonsanddebugerss.controllers;
 import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
 import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntityId;
 import org.example.dungeonsanddebugerss.model.exception.CountryLanguageNotFoundException;
+import org.example.dungeonsanddebugerss.model.exception.CountryNotFoundException;
 import org.example.dungeonsanddebugerss.model.exception.LanguageAlreadyExistsForCountryException;
 import org.example.dungeonsanddebugerss.service.CountryLanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,15 @@ public class CountryLanguageController {
 
 
     @GetMapping("/language/countryCode")
-    public List<CountryLanguageEntity> getCountryLanguageByCountryCode(@RequestParam("countryCode") String countryCode){
-        return countryLanguageService.getAllCountryLanguages().stream()
+    public List<CountryLanguageEntity> getCountryLanguageByCountryCode(@RequestParam("countryCode") String countryCode) throws CountryNotFoundException {
+        List<CountryLanguageEntity> languages = countryLanguageService.getAllCountryLanguages().stream()
                 .filter(c -> c.getCountryCode().getCode()
                 .contains(countryCode)).toList();
+        if(languages.isEmpty()){
+            throw new CountryNotFoundException(countryCode);
+        }else{
+            return languages;
+        }
     }
 
     @PutMapping("/language/countryCode/lang")
