@@ -1,6 +1,7 @@
 package org.example.dungeonsanddebugerss.service;
 
 import org.example.dungeonsanddebugerss.model.entities.CityEntity;
+import org.example.dungeonsanddebugerss.model.exception.CityAlreadyExistsException;
 import org.example.dungeonsanddebugerss.model.respositories.CityEntityRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -24,6 +25,9 @@ public class CityService {
     }
 
     public Optional<CityEntity> getCityById(Integer id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         return cityEntityRepository.findById(id);
     }
 
@@ -49,6 +53,16 @@ public class CityService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public List<CityEntity> findCitiesByName(String name){
+        return cityEntityRepository.findByName(name);
+    }
+
+    public void checkCityDoesNotExist(CityEntity city) throws CityAlreadyExistsException {
+        if (getCityById(city.getId()).isPresent()) {
+            throw new CityAlreadyExistsException(city.getId());
         }
     }
 }
