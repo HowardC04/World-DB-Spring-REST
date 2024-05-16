@@ -28,8 +28,19 @@ public class CountryExceptionAdvice {
     @ExceptionHandler(CountryIsNullException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Response> countryIsNull(CountryIsNullException e, HttpServletRequest request) {
-        Response response = new Response(request.getRequestURL().toString(), 999, e.getMessage());
+        Response response = new Response(request.getRequestURL().toString(), 400, e.getMessage());
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 

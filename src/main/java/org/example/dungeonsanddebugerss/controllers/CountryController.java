@@ -1,5 +1,6 @@
 package org.example.dungeonsanddebugerss.controllers;
 
+import jakarta.validation.Valid;
 import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
 import org.example.dungeonsanddebugerss.model.exception.CountryCodeDoesNotExistException;
 import org.example.dungeonsanddebugerss.model.exception.CountryIsNullException;
@@ -24,12 +25,14 @@ public class CountryController {
 
     @PostMapping("/country")
     @ResponseStatus(HttpStatus.CREATED)
-    public String addCountry(@RequestBody CountryEntity countryEntity) throws CountryIsNullException {
-        if (countryEntity == null) {
+    public String addCountry(@RequestBody Optional<CountryEntity> countryEntity) throws CountryIsNullException {
+        if (countryEntity.isEmpty()) {
             throw new CountryIsNullException();
+        }else {
+
+            countryService.createCountry(countryEntity.get());
+            return "Country: " + countryEntity.get().getName() + " has been added to the database";
         }
-        countryService.createCountry(countryEntity);
-        return "Country: " + countryEntity.getName() + " has been added to the database";
     }
 
     @GetMapping("/countries")
@@ -48,16 +51,16 @@ public class CountryController {
     }
 
     @PutMapping("/country/{countryCode}")
-    public Optional<CountryEntity> updateCountry(@RequestBody CountryEntity country, @PathVariable String countryCode) throws CountryCodeDoesNotExistException, CountryIsNullException {
+    public Optional<CountryEntity> updateCountry(@Valid @RequestBody Optional<CountryEntity> country, @PathVariable String countryCode) throws CountryCodeDoesNotExistException, CountryIsNullException {
         Optional<CountryEntity> findCountry = countryService.getCountryByCode(countryCode);
 
-        if (findCountry.isPresent() && country != null) {
-            countryService.updateCountry(countryCode, country);
+        if (findCountry.isPresent() && country.isPresent()) {
+            countryService.updateCountry(countryCode, country.get());
         }
         else if (findCountry.isEmpty()) {
             throw new CountryCodeDoesNotExistException(countryCode);
         }
-        else {
+        else if(!country.isPresent()){
             throw new CountryIsNullException();
         }
 
