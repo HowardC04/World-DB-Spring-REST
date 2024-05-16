@@ -31,10 +31,10 @@ Adding pom.xml
 You will need to create your own pom.xml file which needs to contain the following
 Spring Web
 Spring Reactive Web
-Resst Repositories
+Rest Repositories
 Spring Hateoas
 JDBC API
-SPring Data JPA
+Spring Data JPA
 Validation
 Spring Boot Actuator
 MySQL Driver or the driver for your database
