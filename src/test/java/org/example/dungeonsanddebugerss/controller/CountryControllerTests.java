@@ -56,7 +56,7 @@ public class CountryControllerTests {
     void givenAPostRequestWithAValidCountryA201StatusCodeIsReturned() {
         CountryEntity country = getCountry("CHN");
         webTestClient.post()
-                .uri("http://localhost:8080/api/country")
+                .uri("http://localhost:8080/api/country"  + "?key=hi")
                 .body(BodyInserters.fromValue(country))
                 .exchange()
                 .expectStatus()
