@@ -70,15 +70,27 @@ Setup: Ensure you have Java installed on your system.
 
 Adding pom.xml
 You will need to create your own pom.xml file which needs to contain the following
-Spring Web
-Spring Reactive Web
-Resst Repositories
-Spring Hateoas
-JDBC API
-SPring Data JPA
-Validation
-Spring Boot Actuator
-MySQL Driver or the driver for your database
+[Spring Web]
+[Spring Reactive Web]
+[Resst Repositories]
+[Spring Hateoas]
+[JDBC API]
+[SPring Data JPA]
+[Validation]
+[Spring Boot Actuator]
+[MySQL Driver or the driver for your database]
+
+<h2>Connecting to your database</h2>
+
+
+To connect to your database please fill out the following in your application.properties file.
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/world
+spring.datasource.username=<YOUR USERNAME>
+spring.datasource.password=<YOUR PASSWORD>
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+```
 
 ## How to use the Program 
 
@@ -109,7 +121,7 @@ endpoints on the tomcat server.
 
 In addition to this swagger allows you to input an API key to test any authorization filters within the server.
 
-To enhance maintainability we created logging functionality using java.util.logging. Our colour-coded logger allows you to easily track the flow of the program, record the state when an important event happens and capture errors or exceptions that occur during runtime. This can be used through the Log class and it's static methods.
+
 
 
 ##  
