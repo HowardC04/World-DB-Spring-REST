@@ -27,6 +27,18 @@ Setup: Ensure you have Java installed on your system.
     Commit and push
     Wait for pull request to be merged
 
+Adding pom.xml
+You will need to create your own pom.xml file which needs to contain the following
+Spring Web
+Spring Reactive Web
+Resst Repositories
+Spring Hateoas
+JDBC API
+SPring Data JPA
+Validation
+Spring Boot Actuator
+MySQL Driver or the driver for your database
+
 ## How to use the Program 
 
 Open the project directory: "Dungeons and Debuggerss" and open the class "App". Ensure the spring boot application is running:
