@@ -1,21 +1,18 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.antlr.v4.runtime.misc.LogManager;
-import org.example.dungeonsanddebugerss.entities.CityEntity;
-import org.example.dungeonsanddebugerss.entities.CountryEntity;
+import org.example.dungeonsanddebugerss.model.entities.CityEntity;
+import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
 
-import org.example.dungeonsanddebugerss.entities.CountrylanguageEntity;
-import org.example.dungeonsanddebugerss.respositories.CityEntityRepository;
-import org.example.dungeonsanddebugerss.respositories.CountryEntityRepository;
-import org.example.dungeonsanddebugerss.respositories.CountrylanguageEntityRepository;
+import org.example.dungeonsanddebugerss.model.entities.CountryLanguageEntity;
+import org.example.dungeonsanddebugerss.model.respositories.CityEntityRepository;
+import org.example.dungeonsanddebugerss.model.respositories.CountryEntityRepository;
+import org.example.dungeonsanddebugerss.model.respositories.CountryLanguageEntityRepository;
 
 
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 
 @Service
@@ -26,9 +23,9 @@ public class WorldService {
 
     private CityEntityRepository cityEntityRepository;
     private CountryEntityRepository countryEntityRepository;
-    private CountrylanguageEntityRepository countrylanguageEntityRepository;
+    private CountryLanguageEntityRepository countrylanguageEntityRepository;
 
-    public WorldService(CityEntityRepository cityEntityRepository, CountryEntityRepository countryEntityRepository, CountrylanguageEntityRepository countrylanguageEntityRepository, CountryService countryService) {
+    public WorldService(CityEntityRepository cityEntityRepository, CountryEntityRepository countryEntityRepository, CountryLanguageEntityRepository countrylanguageEntityRepository, CountryService countryService) {
         this.cityEntityRepository = cityEntityRepository;
         this.countryEntityRepository = countryEntityRepository;
         this.countrylanguageEntityRepository = countrylanguageEntityRepository;
@@ -172,7 +169,7 @@ public class WorldService {
         }
         logger.info("Getting number of people who speaks each official language");
         ArrayList<Integer> peopleWhoSpeakLanguage = new ArrayList<Integer>();
-        for(CountrylanguageEntity language : getAllLanguageCountrySpeaks(countryCode)){
+        for(CountryLanguageEntity language : getAllLanguageCountrySpeaks(countryCode)){
             if(language.getIsOfficial().equals("T")){
                 peopleWhoSpeakLanguage.add(Math.round(totalPopulation * (language.getPercentage().floatValue()/100)));
             }
@@ -196,9 +193,9 @@ public class WorldService {
         return null;
     }
 
-    private List<CountrylanguageEntity> getAllLanguageCountrySpeaks(String countryCode){
-        List<CountrylanguageEntity> countries = new ArrayList<>();
-        for(CountrylanguageEntity countrylanguageEntity : countrylanguageEntityRepository.findAll()){
+    private List<CountryLanguageEntity> getAllLanguageCountrySpeaks(String countryCode){
+        List<CountryLanguageEntity> countries = new ArrayList<>();
+        for(CountryLanguageEntity countrylanguageEntity : countrylanguageEntityRepository.findAll()){
             if(countrylanguageEntity.getCountryCode().getCode().equals(countryCode)){
                 countries.add(countrylanguageEntity);
             }

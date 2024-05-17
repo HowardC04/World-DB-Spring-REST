@@ -1,7 +1,7 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.example.dungeonsanddebugerss.entities.CountryEntity;
-import org.example.dungeonsanddebugerss.respositories.CountryEntityRepository;
+import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
+import org.example.dungeonsanddebugerss.model.respositories.CountryEntityRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

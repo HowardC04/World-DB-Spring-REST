@@ -1,7 +1,7 @@
 package org.example.dungeonsanddebugerss.service;
 
-import org.example.dungeonsanddebugerss.entities.CountryEntity;
-import org.example.dungeonsanddebugerss.respositories.CountryEntityRepository;
+import org.example.dungeonsanddebugerss.model.entities.CountryEntity;
+import org.example.dungeonsanddebugerss.model.respositories.CountryEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -26,6 +26,7 @@ public class CountryService {
     }
 
     public Optional<CountryEntity> getCountryByCode(String code) {
+        if (code == null) return Optional.empty();
         return countryRepository.findById(code);
     }
 
