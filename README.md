@@ -1,5 +1,5 @@
 <h1>World-DB-Spring-REST</h1>
-World-DB-Spring 'Elite Seven' consisting of Howard, Patrick W, Patrick S, Selam, Alistar, Alex and Phoenix 👋.
+World-DB-Spring 'Elite Seven' consisting of Howard, Patrick W, Patrick S, Selam, Alastair, Alex and Phoenix 👋.
 
 ## Project Overview
 This project creates a Java applicaiton that uses an SQL database which contains a list of countries and cities, along with other details.
