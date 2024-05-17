@@ -108,6 +108,11 @@ Open the project directory: "Dungeons and Debuggerss" and open the class "App". 
     <version>2.1.0</version>
         </dependency>
 ```
+
+Run this:
+```
+http://localhost:8080/swagger-ui/index.html
+```
 In order for swagger to work with Spring WebFlux application ensure that springdoc-openapi-webflux depdency is inside the pom.xml file. For more information on how to install swagger onto your project please use the following guide:
 <br></br>
 https://www.baeldung.com/spring-rest-openapi-documentation
